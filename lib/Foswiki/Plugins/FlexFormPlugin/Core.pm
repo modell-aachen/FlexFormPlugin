@@ -289,6 +289,7 @@ sub handleRENDERFORDISPLAY {
     $line = $field->renderForDisplay($line, $fieldValue, {
       bar=>'|', # SMELL: keep bars
       newline=>'$n', # SMELL: keep newlines
+      display=>1,
     }); # SMELL what about the attrs param in Foswiki::Form
         # SMELL wtf is this attr anyway
 
