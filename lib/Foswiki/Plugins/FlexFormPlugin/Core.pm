@@ -289,22 +289,27 @@ sub handleRENDERFORDISPLAY {
     $line =~ s/\$title\b/$fieldTitle/g;
 
     # For Foswiki > 1.2, treat $value ourselves to get a consistent
-    # behavior across all releases
-    if ($line =~ /\$value\b/ && $field->can('getDisplayValue')) { 
-      my $value = $field->getDisplayValue($fieldValue);
-      $line =~ s/\$value(\(display\))?/$value/g;
+    # behavior across all releases:
+    # - patch in (display) value as $value
+    # - use raw value as $origvalue
+    my $origValue = $fieldValue;
+    if ($field->{type} =~ /\+values/ && $field->can('getDisplayValue')) { 
+      $fieldValue = $field->getDisplayValue($fieldValue);
     }
 
+    # now dive into the core and see what we get out of it
     $line = $field->renderForDisplay($line, $fieldValue, {
       bar=>'|', #  keep bars
       newline=>'$n', # keep newlines
     }); 
 
+    # render left-overs by ourselfs
     $line =~ s/\$name\b/$fieldName/g;
     $line =~ s/\$type\b/$fieldType/g;
     $line =~ s/\$size\b/$fieldSize/g;
     $line =~ s/\$attrs\b/$fieldAttrs/g;
-    $line =~ s/\$(orig)?value\b/$fieldValue/g;
+    $line =~ s/\$value(\(display\))?\b/$fieldValue/g;
+    $line =~ s/\$origvalue\b/$origValue/g;
     $line =~ s/\$default\b/$fieldDefault/g;
     $line =~ s/\$(tooltip|description)\b/$fieldDescription/g;
     $line =~ s/\$title\b/$fieldTitle/g;
