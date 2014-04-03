@@ -288,10 +288,16 @@ sub handleRENDERFORDISPLAY {
     $line =~ s/\$origvalues\b/$fieldOrigAllowedValues/g;
     $line =~ s/\$title\b/$fieldTitle/g;
 
+    # For Foswiki > 1.2, treat $value ourselves to get a consistent
+    # behavior across all releases
+    if ($line =~ /\$value\b/ && $field->can('getDisplayValue')) { 
+      my $value = $field->getDisplayValue($fieldValue);
+      $line =~ s/\$value(\(display\))?/$value/g;
+    }
+
     $line = $field->renderForDisplay($line, $fieldValue, {
       bar=>'|', #  keep bars
       newline=>'$n', # keep newlines
-      display=>1,
     }); 
 
     $line =~ s/\$name\b/$fieldName/g;
