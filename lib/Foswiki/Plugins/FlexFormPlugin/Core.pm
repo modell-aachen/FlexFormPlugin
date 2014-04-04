@@ -293,7 +293,7 @@ sub handleRENDERFORDISPLAY {
     # - patch in (display) value as $value
     # - use raw value as $origvalue
     my $origValue = $fieldValue;
-    if ($field->{type} =~ /\+values/ && $field->can('getDisplayValue')) { 
+    if ($field->can('getDisplayValue')) { 
       $fieldValue = $field->getDisplayValue($fieldValue);
     }
 
@@ -301,6 +301,7 @@ sub handleRENDERFORDISPLAY {
     $line = $field->renderForDisplay($line, $fieldValue, {
       bar=>'|', #  keep bars
       newline=>'$n', # keep newlines
+      display=> 1,
     }); 
 
     # render left-overs by ourselfs
