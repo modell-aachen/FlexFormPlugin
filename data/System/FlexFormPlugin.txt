@@ -151,11 +151,12 @@ The =format= parameter may contain the following pseudo-variables:
 -->
 
 |  Author(s): | Foswiki:MichaelDaum|
-|  Copyright: | &copy; 2009-2013 Michael Daum http://michaeldaumconsulting.com |
+|  Copyright: | &copy; 2009-2014 Michael Daum http://michaeldaumconsulting.com |
 |  License: | [[http://www.gnu.org/licenses/gpl.html][GPL (Gnu General Public License)]] |
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  03 Mar 2014: | work around different styles of inconsistencies in =renderForDisplay= across foswiki core releases |
 |  07 Nov 2013: | properly render =checkbox+buttons= formfields |
 |  13 Jul 2013: | added =revision= parameter to access non-top revisions; \
                   improved compatibility with foswiki-1.2.x |

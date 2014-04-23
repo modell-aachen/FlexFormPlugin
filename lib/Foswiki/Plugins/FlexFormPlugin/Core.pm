@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 # 
-# Copyright (C) 2009-2013 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2009-2014 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -26,11 +26,11 @@ our $baseWeb;
 our $baseTopic;
 our %topicObjs;
 
-use constant DEBUG => 0; # toggle me
+use constant TRACE => 0; # toggle me
 
 ###############################################################################
 sub writeDebug {
-  print STDERR "- FlexFormPlugin - $_[0]\n" if DEBUG;
+  print STDERR "- FlexFormPlugin - $_[0]\n" if TRACE;
 }
 
 ##############################################################################
