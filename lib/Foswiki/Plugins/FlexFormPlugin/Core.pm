@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 # 
-# Copyright (C) 2009-2013 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2009-2014 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -26,11 +26,11 @@ our $baseWeb;
 our $baseTopic;
 our %topicObjs;
 
-use constant DEBUG => 0; # toggle me
+use constant TRACE => 0; # toggle me
 
 ###############################################################################
 sub writeDebug {
-  print STDERR "- FlexFormPlugin - $_[0]\n" if DEBUG;
+  print STDERR "- FlexFormPlugin - $_[0]\n" if TRACE;
 }
 
 ##############################################################################
@@ -47,17 +47,18 @@ sub finish {
 ##############################################################################
 # create a new topic object, reuse already created ones
 sub getTopicObject {
-  my ($session, $web, $topic) = @_;
+  my ($session, $web, $topic, $rev) = @_;
 
   $web ||= '';
   $topic ||= '';
+  $rev ||= '';
   
   $web =~ s/\//\./go;
-  my $key = $web.'.'.$topic;
+  my $key = $web.'.'.$topic.'@'.$rev;
   my $topicObj = $topicObjs{$key};
   
   unless ($topicObj) {
-    ($topicObj, undef) = Foswiki::Func::readTopic($web, $topic);
+    ($topicObj, undef) = Foswiki::Func::readTopic($web, $topic, $rev);
     $topicObjs{$key} = $topicObj;
   }
 
@@ -71,6 +72,7 @@ sub handleRENDERFORDISPLAY {
   #writeDebug("called handleRENDERFORDISPLAY($theTopic, $theWeb)");
 
   my $thisTopic = $params->{_DEFAULT} || $params->{topic} || $theTopic;
+  my $thisRev = $params->{revision};
   my $theFields = $params->{field} || $params->{fields};
   my $theForm = $params->{form};
   my $theFormat = $params->{format};
@@ -113,7 +115,7 @@ sub handleRENDERFORDISPLAY {
 
   my $thisWeb = $theWeb;
   ($thisWeb, $thisTopic) = Foswiki::Func::normalizeWebTopicName($thisWeb, $thisTopic);
-  my $topicObj = getTopicObject($session, $thisWeb, $thisTopic); 
+  my $topicObj = getTopicObject($session, $thisWeb, $thisTopic, $thisRev); 
 
   $theForm = $session->{request}->param('formtemplate') unless defined $theForm;
   $theForm = $topicObj->getFormName unless defined $theForm;
@@ -286,18 +288,29 @@ sub handleRENDERFORDISPLAY {
     $line =~ s/\$origvalues\b/$fieldOrigAllowedValues/g;
     $line =~ s/\$title\b/$fieldTitle/g;
 
-    $line = $field->renderForDisplay($line, $fieldValue, {
-      bar=>'|', # SMELL: keep bars
-      newline=>'$n', # SMELL: keep newlines
-      display=>1,
-    }); # SMELL what about the attrs param in Foswiki::Form
-        # SMELL wtf is this attr anyway
+    # For Foswiki > 1.2, treat $value ourselves to get a consistent
+    # behavior across all releases:
+    # - patch in (display) value as $value
+    # - use raw value as $origvalue
+    my $origValue = $fieldValue;
+    if ($field->can('getDisplayValue')) { 
+      $fieldValue = $field->getDisplayValue($fieldValue);
+    }
 
+    # now dive into the core and see what we get out of it
+    $line = $field->renderForDisplay($line, $fieldValue, {
+      bar=>'|', #  keep bars
+      newline=>'$n', # keep newlines
+      display=> 1,
+    }); 
+
+    # render left-overs by ourselfs
     $line =~ s/\$name\b/$fieldName/g;
     $line =~ s/\$type\b/$fieldType/g;
     $line =~ s/\$size\b/$fieldSize/g;
     $line =~ s/\$attrs\b/$fieldAttrs/g;
-    $line =~ s/\$(orig)?value\b/$fieldValue/g;
+    $line =~ s/\$value(\(display\))?\b/$fieldValue/g;
+    $line =~ s/\$origvalue\b/$origValue/g;
     $line =~ s/\$default\b/$fieldDefault/g;
     $line =~ s/\$(tooltip|description)\b/$fieldDescription/g;
     $line =~ s/\$title\b/$fieldTitle/g;
@@ -327,6 +340,7 @@ sub handleRENDERFOREDIT {
   #writeDebug("called handleRENDERFOREDIT($theTopic, $theWeb)");
 
   my $thisTopic = $params->{_DEFAULT} || $params->{topic} || $theTopic;
+  my $thisRev = $params->{revision};
   my $theFields = $params->{field} || $params->{fields};
   my $theForm = $params->{form};
   my $theValue = $params->{value};
@@ -351,7 +365,8 @@ sub handleRENDERFOREDIT {
     $theFooter = '</div>';
     $theFormat = '<div class=\'foswikiFormStep\'>
       <h3> $title:$mandatory </h3>
-      $edit 
+      $edit
+      $extra
       <div class=\'foswikiFormDescription\'>$description</div>
     </div>';
   } else {
@@ -365,7 +380,7 @@ sub handleRENDERFOREDIT {
   my $thisWeb = $theWeb;
 
   ($thisWeb, $thisTopic) = Foswiki::Func::normalizeWebTopicName($thisWeb, $thisTopic);
-  my $topicObj = getTopicObject($session, $thisWeb, $thisTopic); 
+  my $topicObj = getTopicObject($session, $thisWeb, $thisTopic, $thisRev); 
 
   # give beforeEditHandlers a chance
   # SMELL: watch out for the fix of Item1965; it must be applied here as well; for now
