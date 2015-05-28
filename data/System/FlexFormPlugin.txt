@@ -95,6 +95,7 @@ If all three =format=, =header= and =footer= are undefined a =foswikiFormSteps= 
 The =format= parameter may contain the following pseudo-variables:
    * =$attrs=: attribute string as given in the !DataForm definition
    * =$description=: formfield description in !DataForm 
+   * =$xlatedescription=: formfield description in !DataForm, translated using MAKETEXT
    * =$edit=: the HTML form element as specified by the !DataForm definition, that is a input field, a textarea, a select box, whatever
    * =$extra=: the "extra" return value of the =Foswiki::Form::renderForEdit()= call
    * =$mandatory=: placeholder to display the =mandatory= flag when a formfield is mandatory; the format of the mandatroy flag can be defined in the =mandatory= parameter to RENDERFOREDIT

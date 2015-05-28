@@ -65,6 +65,15 @@ sub getTopicObject {
   return $topicObj;
 }
 
+sub _translate {
+    my ($meta, $text) = @_;
+    $text =~ s#(\\+)#$1\\#g;
+    $text =~ s#(?<!\\)"#\\"#g;
+    $text =~ s#\$#\$dollar#g;
+    $text =~ s#%#\$percnt#g;
+    $meta->expandMacros("%MAKETEXT{\"$text\"}%");
+};
+
 ##############################################################################
 sub handleRENDERFORDISPLAY {
   my ($session, $params, $theTopic, $theWeb) = @_;
@@ -313,6 +322,7 @@ sub handleRENDERFORDISPLAY {
     $line =~ s/\$origvalue\b/$origValue/g;
     $line =~ s/\$default\b/$fieldDefault/g;
     $line =~ s/\$(tooltip|description)\b/$fieldDescription/g;
+    $line =~ s/\$xlatedescription\b/_translate($topicObj, $fieldDescription)/eg;
     $line =~ s/\$title\b/$fieldTitle/g;
     $line =~ s/\$form\b/$formTitle/g;
 
@@ -630,6 +640,7 @@ sub handleRENDERFOREDIT {
     $line =~ s/\$default\b/$fieldDefault/g;
     $line =~ s/\$tooltip\b/$fieldDescription/g;
     $line =~ s/\$description\b/$fieldDescription/g;
+    $line =~ s/\$xlatedescription\b/_translate($topicObj, $fieldDescription)/eg;
     $line =~ s/\$title\b/$fieldTitle/g;
     $line =~ s/\$extra\b/$fieldExtra/g;
 
