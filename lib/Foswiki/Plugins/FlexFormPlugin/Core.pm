@@ -184,7 +184,7 @@ sub handleRENDERFORDISPLAY {
     my $fieldType = $field->{type};
     my $fieldSize = $field->{size};
     my $fieldAttrs = $field->{attributes};
-    my $fieldDescription = $field->{tooltip};
+    my $fieldDescription = $field->{tooltip} || $field->{description};
     my $fieldTitle = $field->{title};
     my $fieldDefiningTopic = $field->{definingTopic};
 
@@ -457,7 +457,7 @@ sub handleRENDERFOREDIT {
     my $fieldType = $field->{type};
     my $fieldSize = $field->{size};
     my $fieldAttrs = $field->{attributes};
-    my $fieldDescription = $field->{tooltip};
+    my $fieldDescription = $field->{tooltip} || $field->{description};
     my $fieldTitle = $field->{title};
     my $fieldDefiningTopic = $field->{definingTopic};
 
