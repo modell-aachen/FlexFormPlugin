@@ -158,7 +158,7 @@ sub handleRENDERFORDISPLAY {
   foreach my $map (split(/\s*,\s*/, $theMap)) {
     $map =~ s/\s*$//;
     $map =~ s/^\s*//;
-    if ($map =~ /^(.*)=(.*)$/) {
+    if ($map =~ /^(.*?)=(.*)$/) {
       $fieldTitles->{$1} = $2;
     }
   }
