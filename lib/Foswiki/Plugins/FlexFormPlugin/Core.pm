@@ -384,7 +384,7 @@ sub handleRENDERFOREDIT {
     $theHeader = '' unless defined $theHeader;
     $theFooter = '' unless defined $theFooter;
   }
-  $theMandatory = " <span class='foswikiAlert'>**</span> " unless defined $theMandatory;
+  $theMandatory = " <span class='foswikiAlert'>*</span> " unless defined $theMandatory;
   $theHiddenFormat = '$edit' unless defined $theHiddenFormat;
   
   my $thisWeb = $theWeb;
