@@ -311,6 +311,8 @@ sub handleRENDERFORDISPLAY {
       bar=>'|', #  keep bars
       newline=>'$n', # keep newlines
       display=> 1,
+      meta => $topicObj,
+      origValue => $origValue,
     }); 
 
     # render left-overs by ourselfs
