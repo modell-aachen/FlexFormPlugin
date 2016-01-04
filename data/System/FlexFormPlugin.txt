@@ -82,6 +82,7 @@ In addition, !FlexFormPlugin facilitates the extraction of field default values 
   &lt;fieldname>_default="..." %BR% \
   &lt;fieldname>_description="..." %BR% \
   &lt;fieldname>_format="..." %BR% \
+  &lt;fieldname>_name="..." %BR% \
   &lt;fieldname>_size="..." %BR% \
   &lt;fieldname>_sort="..." %BR% \
   &lt;fieldname>_title="..." %BR% \

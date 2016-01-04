@@ -262,7 +262,7 @@ sub handleRENDERFORDISPLAY {
         $fieldSort) {
       $fieldClone = $form->createField(
 	$fieldType,
-	name          => $fieldName,
+	name          => $params->{$fieldName.'_name'} || $fieldName,
 	title         => $fieldTitle,
 	size          => $fieldSize,
 	value         => $fieldAllowedValues,
