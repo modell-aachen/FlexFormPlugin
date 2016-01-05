@@ -158,7 +158,7 @@ sub handleRENDERFORDISPLAY {
   foreach my $map (split(/\s*,\s*/, $theMap)) {
     $map =~ s/\s*$//;
     $map =~ s/^\s*//;
-    if ($map =~ /^(.*)=(.*)$/) {
+    if ($map =~ /^(.*?)=(.*)$/) {
       $fieldTitles->{$1} = $2;
     }
   }
@@ -262,7 +262,7 @@ sub handleRENDERFORDISPLAY {
         $fieldSort) {
       $fieldClone = $form->createField(
 	$fieldType,
-	name          => $fieldName,
+	name          => $params->{$fieldName.'_name'} || $fieldName,
 	title         => $fieldTitle,
 	size          => $fieldSize,
 	value         => $fieldAllowedValues,
@@ -311,6 +311,8 @@ sub handleRENDERFORDISPLAY {
       bar=>'|', #  keep bars
       newline=>'$n', # keep newlines
       display=> 1,
+      meta => $topicObj,
+      origValue => $origValue,
     }); 
 
     # render left-overs by ourselfs
@@ -384,7 +386,7 @@ sub handleRENDERFOREDIT {
     $theHeader = '' unless defined $theHeader;
     $theFooter = '' unless defined $theFooter;
   }
-  $theMandatory = " <span class='foswikiAlert'>**</span> " unless defined $theMandatory;
+  $theMandatory = " <span class='foswikiAlert'>*</span> " unless defined $theMandatory;
   $theHiddenFormat = '$edit' unless defined $theHiddenFormat;
   
   my $thisWeb = $theWeb;
@@ -420,7 +422,7 @@ sub handleRENDERFOREDIT {
   foreach my $map (split(/\s*,\s*/, $theMap)) {
     $map =~ s/\s*$//;
     $map =~ s/^\s*//;
-    if ($map =~ /^(.*)=(.*)$/) {
+    if ($map =~ /^(.*?)=(.*)$/) {
       $fieldTitles->{$1} = $2;
     }
   }
