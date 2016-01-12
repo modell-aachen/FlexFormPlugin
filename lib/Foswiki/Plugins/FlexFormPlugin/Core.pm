@@ -204,7 +204,7 @@ sub handleRENDERFORDISPLAY {
       # fallback to field->value
       my $options = $field->{value};
       if ($options && $field->{type} =~ /\+values/) {
-        $fieldAllowedValues = join($theValueSep, map { s/^(.*)=.*$/$1/ } split(/\s*,\s*/, $options));
+        $fieldAllowedValues = join($theValueSep, map { s/^(.*)=.*$/$1/r } split(/\s*,\s*/, $options));
       } elsif ($options) {
         $fieldAllowedValues = join($theValueSep, split(/\s*,\s*/, $options));
       }
