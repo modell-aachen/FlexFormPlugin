@@ -203,7 +203,9 @@ sub handleRENDERFORDISPLAY {
       #writeDebug("can't getOptions ... fallback to field->{value}");
       # fallback to field->value
       my $options = $field->{value};
-      if ($options) {
+      if ($options && $field->{type} =~ /\+values/) {
+        $fieldAllowedValues = join($theValueSep, map { s/^(.*)=.*$/$1/ } split(/\s*,\s*/, $options));
+      } elsif ($options) {
         $fieldAllowedValues = join($theValueSep, split(/\s*,\s*/, $options));
       }
     }
