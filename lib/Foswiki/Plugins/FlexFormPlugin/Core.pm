@@ -98,6 +98,7 @@ sub handleRENDERFORDISPLAY {
   my $theAutolink = Foswiki::Func::isTrue($params->{autolink}, 1);
   my $theSort = Foswiki::Func::isTrue($params->{sort}, 0);
   my $theHideEmpty = Foswiki::Func::isTrue($params->{hideempty}, 0);
+  my $shouldEscape = $params->{escapeValue}; 
 
   # get defaults from template
   if (!defined($theFormat) && !defined($theHeader) && !defined($theFooter)) {
@@ -306,6 +307,9 @@ sub handleRENDERFORDISPLAY {
     my $origValue = $fieldValue;
     if ($field->can('getDisplayValue')) { 
       $fieldValue = $field->getDisplayValue($fieldValue);
+    }
+    if($shouldEscape eq "1") {
+      $fieldValue = "%ENCODE{\"$fieldValue\" type=\"safe\"}%";
     }
 
     # now dive into the core and see what we get out of it
