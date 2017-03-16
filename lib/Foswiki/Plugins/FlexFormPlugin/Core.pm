@@ -308,7 +308,7 @@ sub handleRENDERFORDISPLAY {
     if ($field->can('getDisplayValue')) { 
       $fieldValue = $field->getDisplayValue($fieldValue);
     }
-    if($shouldEscape eq "1") {
+    if(defined($shouldEscape) && $shouldEscape eq "1") {
       $fieldValue = "%ENCODE{\"$fieldValue\" type=\"safe\"}%";
     }
 
