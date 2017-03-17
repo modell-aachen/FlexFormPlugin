@@ -62,7 +62,7 @@ In addition, !FlexFormPlugin facilitates the extraction of field default values 
 | "..." or topic="..." | name of a topic to display the form for | the base topic of the current url |
 | revision="..." | topic revision to display |
 | autolink="on/off" | enable/disable !WikiWord autolinking when rendering a formfield; setting =autolink= sets the default for all fields specific settings of =&lt;fieldname>_autolink=which can, that is you can disable autolinking globally and switch it back on per field | on |
-| escapeValue="1/0" | enable/disable encoding for the $value parameter, to escape symbols like quotes, angle brackets etc. | 0 |
+| escapeValue="..." | if set, enables/disables encoding for the $value parameter, to escape symbols. The escape type is given through escapeValue (e.g. save,entity). See http://foswiki.org/System/VarENCODE to see, which types are allowed.| undefined |
 | excludeattr="..." | regular expression field attributes must match to be excluded from the output | undefined |
 | exclude="..." | regular expression fieldnames must match to be excluded from the output | undefined |
 | fields="&lt;fieldname1>, &lt;fieldname2>, ..." | list of formfields to be displayed | all known formfields |
