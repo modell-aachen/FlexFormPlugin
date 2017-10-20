@@ -307,7 +307,7 @@ sub handleRENDERFORDISPLAY {
     # - use raw value as $origvalue
     my $origValue = $fieldValue;
     if ($field->can('getDisplayValue')) {
-      if($addUserIcon && $fieldType =~ /user.*/ && $Foswiki::cfg{Plugins}{EmployeesAppPlugin}{Enabled}){
+      if($addUserIcon && $fieldType =~ /user.*/ && $Foswiki::cfg{Plugins}{EmployeesAppPlugin}{Enabled} && Foswiki::Plugins::DefaultPreferencesPlugin::getSitePreferencesValue('EMPLOYEESAPP_USERICON')){
         require Foswiki::Plugins::EmployeesAppPlugin;
         $fieldValue = Foswiki::Plugins::EmployeesAppPlugin->renderUserWithIcon($fieldValue, $topicObj->topic, $topicObj->web);
       } else {
