@@ -98,7 +98,8 @@ sub handleRENDERFORDISPLAY {
   my $theAutolink = Foswiki::Func::isTrue($params->{autolink}, 1);
   my $theSort = Foswiki::Func::isTrue($params->{sort}, 0);
   my $theHideEmpty = Foswiki::Func::isTrue($params->{hideempty}, 0);
-  my $shouldEscape = $params->{escapeValue}; 
+  my $shouldEscape = $params->{escapeValue};
+  my $addUserIcon = $params->{usericon} || 0;
 
   # get defaults from template
   if (!defined($theFormat) && !defined($theHeader) && !defined($theFooter)) {
@@ -305,8 +306,13 @@ sub handleRENDERFORDISPLAY {
     # - patch in (display) value as $value
     # - use raw value as $origvalue
     my $origValue = $fieldValue;
-    if ($field->can('getDisplayValue')) { 
-      $fieldValue = $field->getDisplayValue($fieldValue);
+    if ($field->can('getDisplayValue')) {
+      if($addUserIcon && $fieldType =~ /user.*/ && $Foswiki::cfg{Plugins}{EmployeesAppPlugin}{Enabled} && Foswiki::Plugins::DefaultPreferencesPlugin::getSitePreferencesValue('EMPLOYEESAPP_USERICON')){
+        require Foswiki::Plugins::EmployeesAppPlugin;
+        $fieldValue = Foswiki::Plugins::EmployeesAppPlugin->renderUserWithIcon($fieldValue, $topicObj->topic, $topicObj->web);
+      } else {
+        $fieldValue = $field->getDisplayValue($fieldValue);
+      }
     }
     if(defined($shouldEscape)) {
       $fieldValue = "%ENCODE{\"$fieldValue\" type=\"$shouldEscape\"}%";
