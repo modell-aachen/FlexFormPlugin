@@ -68,6 +68,7 @@ In addition, !FlexFormPlugin facilitates the extraction of field default values 
 | fields="&lt;fieldname1>, &lt;fieldname2>, ..." | list of formfields to be displayed | all known formfields |
 | footer="..." | footer string to apped to the output | &lt;empty string> |
 | format="..." | format string to render each formfield with, more info below | =$edit$mandatory= |
+| unescapeEntities="on/off" | convert html-entities in the format =&amp;#...;= to regular characters%BR%does not apply to user-fields with =usericon= option | off |
 | form="..." | topic name containing the !DataForm definition | form found at the base topic |
 | header="..." | header string to be put in front of the output | &lt;empty string> |
 | hideempty="on/off" | hide empty formfields | off |

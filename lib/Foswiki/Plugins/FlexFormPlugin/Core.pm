@@ -100,6 +100,7 @@ sub handleRENDERFORDISPLAY {
   my $theHideEmpty = Foswiki::Func::isTrue($params->{hideempty}, 0);
   my $shouldEscape = $params->{escapeValue};
   my $addUserIcon = $params->{usericon} || 0;
+  my $unescapeEntities = Foswiki::Func::isTrue($params->{unescapeEntities}, 0);
 
   # get defaults from template
   if (!defined($theFormat) && !defined($theHeader) && !defined($theFooter)) {
@@ -312,6 +313,9 @@ sub handleRENDERFORDISPLAY {
         $fieldValue = Foswiki::Plugins::EmployeesAppPlugin::renderUserWithIcon($session, $fieldValue, $topicObj->topic, $topicObj->web);
       } else {
         $fieldValue = $field->getDisplayValue($fieldValue);
+        if($unescapeEntities) {
+            $fieldValue =~ s/&#(\d+);/chr($1)/ge;
+        }
       }
     }
     if(defined($shouldEscape)) {
