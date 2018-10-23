@@ -102,6 +102,11 @@ sub handleRENDERFORDISPLAY {
   my $addUserIcon = $params->{usericon} || 0;
   my $unescapeEntities = Foswiki::Func::isTrue($params->{unescapeEntities}, 0);
 
+  if(! $thisRev) {
+      my $request = Foswiki::Func::getRequestObject();
+      $thisRev = $request->param("rev");
+  }
+
   # get defaults from template
   if (!defined($theFormat) && !defined($theHeader) && !defined($theFooter)) {
     my $templates = $session->templates;

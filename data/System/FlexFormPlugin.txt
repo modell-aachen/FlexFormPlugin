@@ -19,14 +19,14 @@ you will always have to maintain these HTML forms in an EDIT_TEMPLATE as well. T
 be avoided by using a %<nop>RENDERFOREDIT macro that loops over all formfields in your !DataForm
 to render the input form in a more dynamic way while still customizing the overall output.
 
-In addition, !FlexFormPlugin facilitates the extraction of field default values (such as valid schema options) from 
+In addition, !FlexFormPlugin facilitates the extraction of field default values (such as valid schema options) from
 !DataForm. See http://foswiki.org/Development/MacroForRetrievingFieldDefaultValues for background.
 
 ---++ Usage
 ---+++ RENDERFOREDIT
 | *Parameter* | *Description* | *Default* |
 | "..." (or topic="..." | name of a topic to render the edit form for | the base topic of the current url |
-| revision="..." | topic revision which to use the data from while populating the edit form |
+| revision="..." | topic revision which to use the data from while populating the edit form. The URL Parameter "rev" will have the same effect. |
 | excludeattr="..." | regular expression field attributes must match to be excluded from the output | undefined |
 | exclude="..." | regular expression fieldnames must match to be excluded from the output | undefined |
 | fields="&lt;fieldname1>, &lt;fieldname2>, ..." | list of formfields to render the interface for | all known formfields |
