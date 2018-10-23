@@ -1,5 +1,5 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
-# 
+#
 # Copyright (C) 2009-2014 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
@@ -52,11 +52,11 @@ sub getTopicObject {
   $web ||= '';
   $topic ||= '';
   $rev ||= '';
-  
+
   $web =~ s/\//\./go;
   my $key = $web.'.'.$topic.'@'.$rev;
   my $topicObj = $topicObjs{$key};
-  
+
   unless ($topicObj) {
     ($topicObj, undef) = Foswiki::Func::readTopic($web, $topic, $rev);
     $topicObjs{$key} = $topicObj;
@@ -132,7 +132,7 @@ sub handleRENDERFORDISPLAY {
 
   my $thisWeb = $theWeb;
   ($thisWeb, $thisTopic) = Foswiki::Func::normalizeWebTopicName($thisWeb, $thisTopic);
-  my $topicObj = getTopicObject($session, $thisWeb, $thisTopic, $thisRev); 
+  my $topicObj = getTopicObject($session, $thisWeb, $thisTopic, $thisRev);
 
   $theForm = $session->{request}->param('formtemplate') unless defined $theForm;
   $theForm = $topicObj->getFormName unless defined $theForm;
@@ -185,7 +185,7 @@ sub handleRENDERFORDISPLAY {
   }
 
   my @result = ();
-  foreach my $field (@selectedFields) { 
+  foreach my $field (@selectedFields) {
     next unless $field;
 
     my $fieldName = $field->{name};
@@ -238,7 +238,7 @@ sub handleRENDERFORDISPLAY {
     my $fieldDefault = '';
     if ($field->can('getDefaultValue')) {
       $fieldDefault = $field->getDefaultValue() || '';
-    } 
+    }
 
     my $metaField = $topicObj->get('FIELD', $fieldName);
     unless ($metaField) {
@@ -267,7 +267,7 @@ sub handleRENDERFORDISPLAY {
 
     # temporarily remap field to another type
     my $fieldClone;
-    if (defined($params->{$fieldName.'_type'}) || 
+    if (defined($params->{$fieldName.'_type'}) ||
 	defined($params->{$fieldName.'_size'}) ||
         $fieldSort) {
       $fieldClone = $form->createField(
@@ -283,11 +283,11 @@ sub handleRENDERFORDISPLAY {
 	topic         => $topicObj->topic,
       );
       $field = $fieldClone;
-    } 
+    }
 
     next if $theHideEmpty && (!defined($fieldValue) || $fieldValue eq '');
     $fieldValue = $fieldDefault unless defined $fieldValue;
-    
+
     next if $theInclude && $fieldName !~ /$theInclude/;
     next if $theExclude && $fieldName =~ /$theExclude/;
     next if $theIncludeAttr && $fieldAttrs !~ /$theIncludeAttr/;
@@ -334,7 +334,7 @@ sub handleRENDERFORDISPLAY {
       display=> 1,
       meta => $topicObj,
       origValue => $origValue,
-    }); 
+    });
 
     # render left-overs by ourselfs
     $line =~ s/\$name\b/$fieldName/g;
@@ -409,11 +409,11 @@ sub handleRENDERFOREDIT {
   }
   $theMandatory = " <span class='foswikiAlert'>*</span> " unless defined $theMandatory;
   $theHiddenFormat = '$edit' unless defined $theHiddenFormat;
-  
+
   my $thisWeb = $theWeb;
 
   ($thisWeb, $thisTopic) = Foswiki::Func::normalizeWebTopicName($thisWeb, $thisTopic);
-  my $topicObj = getTopicObject($session, $thisWeb, $thisTopic, $thisRev); 
+  my $topicObj = getTopicObject($session, $thisWeb, $thisTopic, $thisRev);
 
   # give beforeEditHandlers a chance
   # SMELL: watch out for the fix of Item1965; it must be applied here as well; for now
@@ -429,7 +429,7 @@ sub handleRENDERFOREDIT {
   my $theFormWeb = $thisWeb;
   ($theFormWeb, $theForm) = Foswiki::Func::normalizeWebTopicName($theFormWeb, $theForm);
 
-  #writeDebug("theForm=$theForm"); 
+  #writeDebug("theForm=$theForm");
 
   if (!Foswiki::Func::topicExists($theFormWeb, $theForm)) {
     return '';
@@ -527,7 +527,7 @@ sub handleRENDERFOREDIT {
     my $fieldDefault = '';
     if ($field->can('getDefaultValue')) {
       $fieldDefault = $field->getDefaultValue() || '';
-    } 
+    }
 
     $fieldSize = $params->{$fieldName.'_size'} if defined $params->{$fieldName.'_size'};
     $fieldAttrs = $params->{$fieldName.'_attributes'} if defined $params->{$fieldName.'_attributes'};
@@ -545,7 +545,7 @@ sub handleRENDERFOREDIT {
 
     # temporarily remap field to another type
     my $fieldClone;
-    if (defined($params->{$fieldName.'_type'}) || 
+    if (defined($params->{$fieldName.'_type'}) ||
 	defined($params->{$fieldName.'_size'}) ||
         defined($params->{$fieldName.'_name'}) ||
         $fieldSort) {
@@ -562,7 +562,7 @@ sub handleRENDERFOREDIT {
 	topic         => $topicObj->topic,
       );
       $field = $fieldClone;
-    } 
+    }
 
 
     #writeDebug("reading fieldName=$fieldName");
@@ -614,21 +614,21 @@ sub handleRENDERFOREDIT {
           $metaField->{value} = $fieldValue;
         } else {
           # temporarily add metaField for rendering it as hidden field
-          $metaField = { 
-            name => $fieldName, 
-            title => $fieldName, 
+          $metaField = {
+            name => $fieldName,
+            title => $fieldName,
             value => $fieldValue
-          }; 
+          };
           $topicObj->putKeyed('FIELD', $metaField);
         }
 	$fieldEdit = $field->renderHidden($topicObj);
       } else {
 	if ($Foswiki::Plugins::VERSION > 2.0) {
-	  ($fieldExtra, $fieldEdit) = 
+	  ($fieldExtra, $fieldEdit) =
 	    $field->renderForEdit($topicObj, $fieldValue);
 	} else {
 	  # pre-TOM
-	  ($fieldExtra, $fieldEdit) = 
+	  ($fieldExtra, $fieldEdit) =
 	    $field->renderForEdit($thisWeb, $thisTopic, $fieldValue);
 	}
       }
