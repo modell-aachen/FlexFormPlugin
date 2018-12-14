@@ -1,6 +1,6 @@
 %META:TOPICINFO{author="ProjectContributor" comment="autosave" date="1356278771" format="1.1" version="3"}%
 ---+!! %TOPIC%
-%$SHORTDESCRIPTION% 
+%$SHORTDESCRIPTION%
 
 %TOC%
 
@@ -19,14 +19,14 @@ you will always have to maintain these HTML forms in an EDIT_TEMPLATE as well. T
 be avoided by using a %<nop>RENDERFOREDIT macro that loops over all formfields in your !DataForm
 to render the input form in a more dynamic way while still customizing the overall output.
 
-In addition, !FlexFormPlugin facilitates the extraction of field default values (such as valid schema options) from 
+In addition, !FlexFormPlugin facilitates the extraction of field default values (such as valid schema options) from
 !DataForm. See http://foswiki.org/Development/MacroForRetrievingFieldDefaultValues for background.
 
 ---++ Usage
 ---+++ RENDERFOREDIT
 | *Parameter* | *Description* | *Default* |
 | "..." (or topic="..." | name of a topic to render the edit form for | the base topic of the current url |
-| revision="..." | topic revision which to use the data from while populating the edit form |
+| revision="..." | topic revision which to use the data from while populating the edit form. The URL Parameter "rev" will have the same effect. |
 | excludeattr="..." | regular expression field attributes must match to be excluded from the output | undefined |
 | exclude="..." | regular expression fieldnames must match to be excluded from the output | undefined |
 | fields="&lt;fieldname1>, &lt;fieldname2>, ..." | list of formfields to render the interface for | all known formfields |
@@ -68,6 +68,7 @@ In addition, !FlexFormPlugin facilitates the extraction of field default values 
 | fields="&lt;fieldname1>, &lt;fieldname2>, ..." | list of formfields to be displayed | all known formfields |
 | footer="..." | footer string to apped to the output | &lt;empty string> |
 | format="..." | format string to render each formfield with, more info below | =$edit$mandatory= |
+| unescapeEntities="on/off" | convert html-entities in the format =&amp;#...;= to regular characters%BR%does not apply to user-fields with =usericon= option | off |
 | form="..." | topic name containing the !DataForm definition | form found at the base topic |
 | header="..." | header string to be put in front of the output | &lt;empty string> |
 | hideempty="on/off" | hide empty formfields | off |
@@ -96,7 +97,7 @@ If all three =format=, =header= and =footer= are undefined a =foswikiFormSteps= 
 
 The =format= parameter may contain the following pseudo-variables:
    * =$attrs=: attribute string as given in the !DataForm definition
-   * =$description=: formfield description in !DataForm 
+   * =$description=: formfield description in !DataForm
    * =$xlatedescription=: formfield description in !DataForm, translated using MAKETEXT
    * =$edit=: the HTML form element as specified by the !DataForm definition, that is a input field, a textarea, a select box, whatever
    * =$extra=: the "extra" return value of the =Foswiki::Form::renderForEdit()= call
@@ -138,8 +139,8 @@ The =format= parameter may contain the following pseudo-variables:
 
 <verbatim>
 %RENDERFORDISPLAY{
-  form="ValueTransactionForm" 
-  field="FromRole" 
+  form="ValueTransactionForm"
+  field="FromRole"
   format="allowed values for $title are $values, default is '$default'"
 }%
 </verbatim>
@@ -186,7 +187,7 @@ The =format= parameter may contain the following pseudo-variables:
 |  24 Mar 2010: | fixed error where topic values were not inserted into the edit form properly |
 |  12 Mar 2010: | cleaned up =$value= and =$values= variable in both RENDERFOREDIT and RENDERFORIDPLSAY;\
                   added =$default= |
-|  11 Mar 2010: | Foswiki:Main.MartinCleaver - added ability to extract allowed values of a field Foswiki:Tasks.Item8671 | 
+|  11 Mar 2010: | Foswiki:Main.MartinCleaver - added ability to extract allowed values of a field Foswiki:Tasks.Item8671 |
 |  10 Mar 2010: | added fine-grained control over each formfield, i.e. remapping of the formfield type |
 |  08 Mar 2010: | initial release |
 |  Dependencies: | %$DEPENDENCIES% |
