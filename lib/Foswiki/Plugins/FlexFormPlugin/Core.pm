@@ -313,14 +313,9 @@ sub handleRENDERFORDISPLAY {
     # - use raw value as $origvalue
     my $origValue = $fieldValue;
     if ($field->can('getDisplayValue')) {
-      if($addUserIcon && $fieldType =~ /user.*/ && $Foswiki::cfg{Plugins}{EmployeesAppPlugin}{Enabled} && Foswiki::Plugins::DefaultPreferencesPlugin::getSitePreferencesValue('EMPLOYEESAPP_USERICON')){
-        require Foswiki::Plugins::EmployeesAppPlugin;
-        $fieldValue = Foswiki::Plugins::EmployeesAppPlugin::renderUserWithIcon($session, $fieldValue, $topicObj->topic, $topicObj->web);
-      } else {
-        $fieldValue = $field->getDisplayValue($fieldValue);
-        if($unescapeEntities) {
-            $fieldValue =~ s/&#(\d+);/chr($1)/ge;
-        }
+      $fieldValue = $field->getDisplayValue($fieldValue);
+      if($unescapeEntities) {
+          $fieldValue =~ s/&#(\d+);/chr($1)/ge;
       }
     }
     if(defined($shouldEscape)) {
@@ -334,6 +329,7 @@ sub handleRENDERFORDISPLAY {
       display=> 1,
       meta => $topicObj,
       origValue => $origValue,
+      addUserIcon => $addUserIcon,
     });
 
     # render left-overs by ourselfs
